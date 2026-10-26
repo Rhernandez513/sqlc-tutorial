@@ -4,6 +4,9 @@ This repository contains the completed code from the official [sqlc Getting Star
 
 It demonstrates how to use `sqlc` to generate type-safe Go code directly from SQL schemas and queries.
 
+![.github/assets/gorun.webp](.github/assets/gorun.webp)
+![.github/assets/verify.webp](.github/assets/verify.webp)
+
 ## Try the Tutorial Yourself
 
 If you want to build this from scratch, follow the excellent step-by-step guide here:

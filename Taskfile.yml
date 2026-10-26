@@ -1,0 +1,38 @@
+version: '3'
+
+vars:
+  ASSETS_DIR: '.github/assets'
+  MAX_WIDTH: 1200
+  QUALITY: 80
+
+tasks:
+  default:
+    desc: Run image optimizations on assets directory
+    deps: [optimize-images]
+
+  deps:
+    desc: Ensure webp CLI dependency is installed
+    cmds:
+      - |
+        if ! command -v cwebp &> /dev/null; then
+          echo "cwebp not found. Installing via Homebrew..."
+          brew install webp
+        fi
+
+  optimize-images:
+    desc: Convert PNG and JPEG images in ASSETS_DIR to optimized WebP
+    deps: [deps]
+    cmds:
+      - |
+        find {{.ASSETS_DIR}} -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) | while read -r img; do
+          webp_img="${img%.*}.webp"
+          echo "Optimizing: $img -> $webp_img"
+          cwebp -q {{.QUALITY}} -resize {{.MAX_WIDTH}} 0 "$img" -o "$webp_img"
+        done
+
+  clean-raw:
+    desc: Remove raw PNG/JPG source files after verifying WebP generation
+    prompt: Are you sure you want to delete source PNG/JPG files in {{.ASSETS_DIR}}?
+    cmds:
+      - find {{.ASSETS_DIR}} -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \) -delete
+      - echo "Raw source images removed."
