@@ -27,9 +27,9 @@ To run this project locally, you will need:
 ## How to Run
 
 1. **Start your PostgreSQL Database**
-   Make sure you have a PostgreSQL instance running locally. If you're using Docker/container manager:
+   Make sure you have a PostgreSQL instance running locally. If you're using Rancher Desktop:
    ```bash
-   docker run --name sqlc-tutorial-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
+   nerdctl run --name sqlc-tutorial-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
    ```
    *(Note: Make sure the connection string in `tutorial.go` matches your database credentials and port!)*
 
