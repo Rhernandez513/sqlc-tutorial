@@ -1,6 +1,9 @@
 version: "2"
 cloud:
   project: "01M5E0FX8EBJEEP60SP25DECP9"
+servers:
+  - engine: postgresql
+    uri: "postgresql://postgres:${POSTGRES_SECRET}@127.0.0.1:5432/postgres?sslmode=disable"
 sql:
   - name: "tutorial"
     engine: "postgresql"
@@ -11,3 +14,5 @@ sql:
         package: "tutorial"
         out: "tutorial"
         sql_package: "pgx/v5"
+    database:
+      managed: true
