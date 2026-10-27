@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"reflect"
 
 	"github.com/jackc/pgx/v5"
@@ -14,10 +16,14 @@ import (
 func run() error {
 	ctx := context.Background()
 
-	// conn, err := pgx.Connect(ctx, "user=pqgotest dbname=pqgotest sslmode=verify-full")
-	conn, err := pgx.Connect(ctx, "postgres://postgres:secret@localhost:5432/tutorial?sslmode=disable")
+	secret := os.Getenv("POSTGRES_SECRET")
+	if secret == "" {
+		return fmt.Errorf("failed to read POSTGRES_SECRET from environment.")
+	}
+	connStr := fmt.Sprintf("postgres://postgres:%s@127.0.0.1:5432/tutorial?sslmode=disable", secret)
+	conn, err := pgx.Connect(ctx, connStr)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to connect to db: %w", err)
 	}
 	defer conn.Close(ctx)
 
